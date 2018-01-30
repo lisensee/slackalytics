@@ -1,6 +1,6 @@
 {
   "name": "SlackAlytics",
-  "version": "1.1.0",
+  "version": "1.2.0-a",
   "description": "Integration with analytics tools to track Slack usage",
   "repository": {
     "type": "git",
