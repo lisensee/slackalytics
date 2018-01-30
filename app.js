@@ -197,7 +197,7 @@ app.post('/collect', function(req, res){
 	}
 
 
-	// LOCALYTICS COLLECT AND POST
+/*	// LOCALYTICS COLLECT AND POST
 	if (env_var.localytics_key) {
 		var lcl_sd_values = {
 			device_id:	uuid.v4(),
@@ -355,7 +355,7 @@ app.post('/collect', function(req, res){
 	} else {
 		logger.log('info', "Localytics application key not defined as environment variable");
 	}
-
+*/
 
 	// MIXPANEL COLLECT AND POST
 	if (env_var.mixpanel_token) {
@@ -381,25 +381,25 @@ app.post('/collect', function(req, res){
 				}
 		};
 
-		var engage_channel_info = {};
-		engage_channel_info[channel.name] = 1;
-		engage_channel_info["total_posts"] = 1;
+//		var engage_channel_info = {};
+//		engage_channel_info[channel.name] = 1;
+//		engage_channel_info["total_posts"] = 1;
 
-		var mixAddEngage = {
-			$distinct_id: user.id,
-			$time: msgTime,
-			$token: env_var.mixpanel_token,
-			$add: engage_channel_info
-		};
+//		var mixAddEngage = {
+//			$distinct_id: user.id,
+//			$time: msgTime,
+//			$token: env_var.mixpanel_token,
+//			$add: engage_channel_info
+//		};
 
-		var mixSetEngage = {
-			$distinct_id: user.id,
-			$time: msgTime,
-			$token: env_var.mixpanel_token,
-			$set: {
-					last_post: moment.unix(msgTime).format('YYYY-MM-DDThh:mm:ss')
-			}		
-		};
+//		var mixSetEngage = {
+//			$distinct_id: user.id,
+//			$time: msgTime,
+//			$token: env_var.mixpanel_token,
+//			$set: {
+//					last_post: moment.unix(msgTime).format('YYYY-MM-DDThh:mm:ss')
+//			}		
+//		};
 
 
 		var mixpanel_url = {
@@ -408,16 +408,16 @@ app.post('/collect', function(req, res){
 //				engage: "https://api.mixpanel.com/engage/?verbose=1&ip=0&data="
 //			} else {
 				track: "https://api.mixpanel.com/track/?ip=0&data=",
-				engage: "https://api.mixpanel.com/engage/?ip=0&data="			
+//				engage: "https://api.mixpanel.com/engage/?ip=0&data="			
 //			}
 		};
 
 		logger.log('info', "Mixpanel Tracking Data: "+JSON.stringify(mixTrack));
-		logger.log('info', "Mixpanel Add Engage Data: "+JSON.stringify(mixAddEngage));
-		logger.log('info', "Mixpanel Set Engage Data: "+JSON.stringify(mixSetEngage));
+//		logger.log('info', "Mixpanel Add Engage Data: "+JSON.stringify(mixAddEngage));
+//		logger.log('info', "Mixpanel Set Engage Data: "+JSON.stringify(mixSetEngage));
 		logger.log('debug', "Mixpanel Tracking Post Output: "+mixpanel_url.track + encodeURIComponent(base64.encode(JSON.stringify(mixTrack))));
-		logger.log('debug', "Mixpanel Add Engage Post Output: "+mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixAddEngage))));
-		logger.log('debug', "Mixpanel Set Engage Post Output: "+mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixSetEngage))));
+//		logger.log('debug', "Mixpanel Add Engage Post Output: "+mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixAddEngage))));
+//		logger.log('debug', "Mixpanel Set Engage Post Output: "+mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixSetEngage))));
 
 		// Post Data
 		request.post(mixpanel_url.track + encodeURIComponent(base64.encode(JSON.stringify(mixTrack))), function(error, resp, body) {
@@ -426,18 +426,18 @@ app.post('/collect', function(req, res){
 					logger.log('error','Mixpanel Error: '+JSON.stringify(error));
 				}
 		});
-		request.post(mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixAddEngage))), function(error, resp, body) {
-				logger.log('debug', 'Mixpanel Engage Response Debug: '+JSON.stringify(resp));
-				if(error) {
-					logger.log('error', 'Mixpanel Error: '+JSON.stringify(error));
-				}
-		});
-		request.post(mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixSetEngage))), function(error, resp, body) {
-				logger.log('debug', 'Mixpanel Engage Response Debug: '+JSON.stringify(resp));
-				if(error) {
-					logger.log('error', 'Mixpanel Error: '+JSON.stringify(error));
-				}
-		});
+//		request.post(mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixAddEngage))), function(error, resp, body) {
+//				logger.log('debug', 'Mixpanel Engage Response Debug: '+JSON.stringify(resp));
+//				if(error) {
+//					logger.log('error', 'Mixpanel Error: '+JSON.stringify(error));
+//				}
+//		});
+//		request.post(mixpanel_url.engage + encodeURIComponent(base64.encode(JSON.stringify(mixSetEngage))), function(error, resp, body) {
+//				logger.log('debug', 'Mixpanel Engage Response Debug: '+JSON.stringify(resp));
+//				if(error) {
+//					logger.log('error', 'Mixpanel Error: '+JSON.stringify(error));
+//				}
+//		});
 	} else {
 		logger.log('info', "Mixpanel token not defined as environment variable");
 	}
